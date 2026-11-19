@@ -142,56 +142,14 @@ textarea, input[type="text"] { width: 100%; font: inherit; color: var(--fg); bac
 .sec > header .icon { color: var(--elephant); }
 .secstate { margin-left: auto; }
 .caption { font-size: 12.5px; color: var(--muted); }
-.diagram { overflow-x: auto; background: var(--surface-2); border-radius: 8px; padding: 10px; }
-.diagram pre.mermaid { margin: 0; background: transparent; font-family: var(--font-mono); font-size: 12px; }
-.tablebox { overflow-x: auto; }
-table.cmp { border-collapse: collapse; width: 100%; font-size: 13px; }
-table.cmp th, table.cmp td { padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: center; white-space: nowrap; }
-table.cmp th:first-child, table.cmp td:first-child { text-align: left; }
-table.cmp thead th { font-family: var(--font-display); font-weight: 600; font-size: 12.5px; color: var(--muted); }
-table.cmp th.picked { color: var(--accent); }
-table.cmp td.picked { background: var(--accent-soft); }
-.yes { color: var(--good); font-weight: 700; }
-.no { color: var(--blocker); font-weight: 700; }
-.partial { color: var(--major); font-weight: 700; }
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
-.stat { background: var(--surface-2); border-radius: 8px; padding: 10px 12px; }
-.stat b { display: block; font-family: var(--font-display); font-size: 22px; font-variant-numeric: tabular-nums; }
-.stat span { font-size: 12px; color: var(--muted); }
-.stat[data-tone="bad"] b { color: var(--blocker); } .stat[data-tone="warn"] b { color: var(--major); } .stat[data-tone="good"] b { color: var(--good); }
-.scope { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.scope > div { border-radius: 8px; padding: 10px 12px; min-width: 0; }
-.scope .in { background: var(--good-soft); } .scope .out { background: var(--surface-2); }
-.scope h4 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; font-family: var(--font-display); }
-.scope .in h4 { color: var(--good); } .scope .out h4 { color: var(--muted); }
-ul.plain { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 5px; }
-ul.plain li { display: flex; gap: 7px; align-items: flex-start; }
-ul.plain li .icon { margin-top: 2px; }
-.flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-.flow .step { background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px; font-size: 13px; display: flex; flex-direction: column; }
-.flow .step small { color: var(--muted); font-size: 11.5px; }
-.flow .step[data-state="bad"] { border-color: var(--blocker); background: var(--blocker-soft); }
-.flow .step[data-state="new"] { border-color: var(--info); background: var(--info-soft); }
-.flow .step[data-state="good"] { border-color: var(--good); background: var(--good-soft); }
-.flow .arrow { color: var(--muted); }
-.risk { display: grid; grid-template-columns: 22px repeat(3, 1fr); grid-template-rows: repeat(3, minmax(56px, auto)) 22px; gap: 4px; }
-.risk .cell { border-radius: 6px; padding: 5px; display: flex; flex-wrap: wrap; gap: 4px; align-content: flex-start; }
-.risk .axis { font-size: 11px; color: var(--muted); display: flex; align-items: center; justify-content: center; }
-.risk .axis.y { writing-mode: vertical-rl; transform: rotate(180deg); }
-.risk .tag { font-size: 11.5px; background: var(--surface); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; }
-.callout { display: flex; gap: 10px; border-radius: 8px; padding: 10px 12px; font-size: 13.5px; }
-.callout[data-tone="info"] { background: var(--info-soft); } .callout[data-tone="info"] .icon { color: var(--info); }
-.callout[data-tone="warn"] { background: var(--major-soft); } .callout[data-tone="warn"] .icon { color: var(--major); }
-.callout[data-tone="bad"] { background: var(--blocker-soft); } .callout[data-tone="bad"] .icon { color: var(--blocker); }
-.callout[data-tone="good"] { background: var(--good-soft); } .callout[data-tone="good"] .icon { color: var(--good); }
-.ba { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.ba > div { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
-.ba h4 { margin: 0; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-family: var(--font-display); }
+/* Canvas: Claude draws each section's picture as inline SVG/HTML using the tokens above. */
+.canvas { min-width: 0; overflow-x: auto; color: var(--fg); }
+.canvas svg:not(.icon) { display: block; max-width: 100%; height: auto; margin-inline: auto; font-family: var(--font-body); }
+.canvas svg text { fill: currentColor; }
+.canvas img { max-width: 100%; }
 .qs { display: flex; flex-direction: column; gap: 10px; }
 .q label { display: block; font-weight: 600; margin-bottom: 4px; }
 .q small { color: var(--muted); display: block; margin-bottom: 4px; }
-.files { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
-.files code { font-family: var(--font-mono); font-size: 12px; background: var(--surface-2); padding: 1px 6px; border-radius: 4px; }
 .secdecide { display: flex; gap: 6px; flex-wrap: wrap; }
 .secdecide button { border: 1px solid var(--line); background: var(--surface-2); border-radius: 7px; padding: 5px 10px; font-size: 12.5px; cursor: pointer; }
 .secdecide button[data-v="approve"][aria-pressed="true"] { background: var(--good); color: #fff; border-color: var(--good); }
@@ -208,7 +166,6 @@ ol.hist li { display: grid; grid-template-columns: 92px 1fr; gap: 10px; }
 ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11.5px; }
 .empty { color: var(--muted); font-size: 13px; }
 @media (max-width: 560px) {
-  .scope, .ba { grid-template-columns: 1fr; }
   .turn { margin-left: 0; }
   ol.hist li { grid-template-columns: 1fr; gap: 2px; }
 }
@@ -300,71 +257,116 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
 
 <script id="egm-board-data" type="application/json">
 {
-  "session": {
-    "title": "Webhook delivery",
-    "skill": "egm-review",
-    "target": "design_draft.md",
-    "round": 1,
-    "example": true
+ "session": {
+  "title": "Webhook delivery",
+  "skill": "egm-review",
+  "target": "design_draft.md",
+  "round": 1,
+  "example": true
+ },
+ "turn": "you",
+ "headline": "Example board: one blocker, retries can deliver an event twice.",
+ "stages": [
+  {
+   "id": "brainstorm",
+   "label": "Brainstorm",
+   "state": "done"
   },
-  "turn": "you",
-  "headline": "Example board: Stage 7 found 1 blocker in retry handling.",
-  "stages": [
-    {"id": "brainstorm", "label": "Brainstorm", "state": "done"},
-    {"id": "draft", "label": "Draft", "state": "done"},
-    {"id": "s5", "label": "Zoom out", "state": "done"},
-    {"id": "s6", "label": "Comprehension", "state": "done"},
-    {"id": "s7", "label": "Critic", "state": "waiting"},
-    {"id": "s8", "label": "Zoom out 2", "state": "todo"},
-    {"id": "s9", "label": "Readiness", "state": "todo"}
-  ],
-  "gate": {
-    "id": "R1-G-s7",
-    "question": "Stage 7 done. What next?",
-    "options": [
-      {"id": "resolve", "label": "Apply my decisions below"},
-      {"id": "proceed", "label": "Go to Stage 8 as is"},
-      {"id": "manual", "label": "I'll edit the doc myself"},
-      {"id": "pause", "label": "Pause review"}
-    ]
+  {
+   "id": "draft",
+   "label": "Draft",
+   "state": "done"
   },
-  "findings": [
-    {"id": "R1-F1", "severity": "blocker", "lens": "egm-design", "title": "Retries can deliver an event twice", "where": "Delivery flow", "suggestion": "PROPOSE FIX", "fix": "Add an idempotency key per event and dedupe on the receiver.",
-     "visual": {"type": "flow", "steps": [{"label": "Send"}, {"label": "Timeout", "state": "bad"}, {"label": "Retry", "state": "bad", "note": "same event again"}, {"label": "Dedupe by key", "state": "new"}]}},
-    {"id": "R1-F2", "severity": "major", "lens": "egm-structural", "title": "Backoff limits missing from Goals", "where": "Goals", "suggestion": "PROPOSE FIX", "fix": "State max attempts (8) and max delay (1 h) as goals."},
-    {"id": "R1-F3", "severity": "major", "lens": "egm-design", "title": "Queue choice rests on an unstated load", "where": "Alternatives", "suggestion": "ESCALATE", "fix": "Tell us the peak events per second."},
-    {"id": "R1-F4", "severity": "nit", "lens": "egm-style", "title": "Two names for one thing", "where": "Overview", "suggestion": "CONTEST", "fix": "Reviewer wants one term; the doc already defines both."}
-  ],
-  "sections": [
-    {"id": "flow", "title": "How a delivery moves", "icon": "flow", "wide": true, "blocks": [
-      {"type": "diagram", "mermaid": "flowchart LR\n  E[Event saved] --> Q[(Queue)]\n  Q --> W[Worker]\n  W -->|200| D[Done]\n  W -->|error| R[Retry with backoff]\n  R --> Q\n  R -->|8 fails| DLQ[(Dead letters)]", "caption": "Failed sends go back to the queue; after 8 tries they park in dead letters."}
-    ]},
-    {"id": "scope", "title": "Scope", "icon": "scope", "blocks": [
-      {"type": "scope", "in": ["Signed payloads", "Retries with backoff", "Dead-letter view"], "out": ["Event filtering", "Custom headers"]}
-    ]},
-    {"id": "options", "title": "Queue options", "icon": "compare", "blocks": [
-      {"type": "compare", "columns": ["Postgres table", "Redis", "SQS"], "pick": 0, "rows": [
-        {"label": "Already in stack", "cells": ["yes", "partial", "no"]},
-        {"label": "Survives restart", "cells": ["yes", "partial", "yes"]},
-        {"label": "Ops cost", "cells": ["low", "mid", "mid"]}
-      ]}
-    ]},
-    {"id": "risks", "title": "Risks", "icon": "risk", "blocks": [
-      {"type": "risks", "items": [{"label": "Duplicate delivery", "likelihood": 3, "impact": 3}, {"label": "Queue backlog", "likelihood": 2, "impact": 2}, {"label": "Key rotation", "likelihood": 1, "impact": 3}]}
-    ]},
-    {"id": "numbers", "title": "At a glance", "icon": "layers", "blocks": [
-      {"type": "stats", "items": [{"label": "Reviewers run", "value": "3/3", "tone": "good"}, {"label": "Blockers", "value": "1", "tone": "bad"}, {"label": "Max attempts", "value": "8"}]}
-    ]}
-  ],
-  "glossary": [
-    {"term": "Idempotency key", "plain": "An ID sent with each event so the receiver can ignore repeats."},
-    {"term": "Dead letters", "plain": "Events that failed every retry, kept for a person to look at."}
-  ],
-  "history": [
-    {"at": "2026-11-19 09:10", "event": "Brainstorm approved"},
-    {"at": "2026-11-19 10:02", "event": "Draft approved, 5 sections"},
-    {"at": "2026-11-19 10:40", "event": "Stage 7: 4 findings (1 blocker)"}
+  {
+   "id": "s5",
+   "label": "Zoom out",
+   "state": "done"
+  },
+  {
+   "id": "s6",
+   "label": "Comprehension",
+   "state": "done"
+  },
+  {
+   "id": "s7",
+   "label": "Critic",
+   "state": "waiting"
+  },
+  {
+   "id": "s8",
+   "label": "Zoom out 2",
+   "state": "todo"
+  },
+  {
+   "id": "s9",
+   "label": "Readiness",
+   "state": "todo"
+  }
+ ],
+ "gate": {
+  "id": "R1-G-s7",
+  "question": "Stage 7 done. What next?",
+  "options": [
+   {
+    "id": "resolve",
+    "label": "Apply my decisions below"
+   },
+   {
+    "id": "proceed",
+    "label": "Go to Stage 8 as is"
+   },
+   {
+    "id": "manual",
+    "label": "I'll edit the doc myself"
+   },
+   {
+    "id": "pause",
+    "label": "Pause review"
+   }
   ]
+ },
+ "findings": [
+  {
+   "id": "R1-F1",
+   "severity": "blocker",
+   "lens": "egm-design",
+   "title": "Retries can deliver an event twice",
+   "where": "How a delivery moves",
+   "suggestion": "PROPOSE FIX",
+   "fix": "Send an idempotency key with every event.",
+   "visual": "<svg viewBox=\"0 0 320 70\" role=\"img\" aria-label=\"Today the repeat is processed twice; with a key the customer drops the repeat.\"><g style=\"font-size:12px\">\n<rect x=\"0\" y=\"4\" width=\"150\" height=\"26\" rx=\"6\" style=\"fill:var(--blocker-soft);stroke:var(--blocker)\"/><text x=\"75\" y=\"21\" text-anchor=\"middle\">Today: charged twice<\/text>\n<rect x=\"170\" y=\"4\" width=\"150\" height=\"26\" rx=\"6\" style=\"fill:var(--good-soft);stroke:var(--good)\"/><text x=\"245\" y=\"21\" text-anchor=\"middle\">Key: repeat ignored<\/text>\n<text x=\"160\" y=\"60\" text-anchor=\"middle\" style=\"fill:var(--muted);font-size:11px\">same event, same key → customer skips it<\/text><\/g><\/svg>"
+  },
+  {
+   "id": "R1-F2",
+   "severity": "major",
+   "lens": "egm-design",
+   "title": "Queue choice rests on an unknown peak load",
+   "where": "How a delivery moves",
+   "suggestion": "ESCALATE",
+   "fix": "What is the peak events per second?"
+  }
+ ],
+ "sections": [
+  {
+   "id": "flow",
+   "title": "How a delivery moves",
+   "icon": "flow",
+   "wide": true,
+   "html": "<style>.wd .n{fill:var(--surface-2);stroke:var(--line)}.wd .ok{fill:var(--good-soft);stroke:var(--good)}.wd .bad{fill:var(--blocker-soft);stroke:var(--blocker)}.wd .park{fill:var(--major-soft);stroke:var(--major)}.wd .e{stroke:var(--muted);fill:none;stroke-width:1.6}.wd .eb{stroke:var(--blocker);fill:none;stroke-width:2;stroke-dasharray:5 4}.wd text{font-size:13px}.wd .s{font-size:11px;fill:var(--muted)}.wd .r{fill:var(--blocker);font-weight:600}<\/style>\n<svg class=\"wd\" viewBox=\"0 0 720 230\" role=\"img\" aria-label=\"An event goes through the queue to a worker that calls the customer. Errors retry; after 8 tries the event is parked. A timeout after the customer already got it sends it twice.\">\n<defs><marker id=\"wd-a\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto\"><path d=\"M0 0L10 5L0 10z\" style=\"fill:var(--muted)\"/><\/marker><marker id=\"wd-b\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto\"><path d=\"M0 0L10 5L0 10z\" style=\"fill:var(--blocker)\"/><\/marker><\/defs>\n<rect class=\"n\" x=\"10\" y=\"60\" width=\"110\" height=\"50\" rx=\"10\"/><text x=\"65\" y=\"90\" text-anchor=\"middle\">Event saved<\/text>\n<rect class=\"n\" x=\"170\" y=\"60\" width=\"100\" height=\"50\" rx=\"10\"/><text x=\"220\" y=\"90\" text-anchor=\"middle\">Queue<\/text>\n<rect class=\"n\" x=\"320\" y=\"60\" width=\"100\" height=\"50\" rx=\"10\"/><text x=\"370\" y=\"90\" text-anchor=\"middle\">Sender<\/text>\n<rect class=\"ok\" x=\"500\" y=\"60\" width=\"200\" height=\"50\" rx=\"10\"/><text x=\"600\" y=\"83\" text-anchor=\"middle\">Customer's server<\/text><text class=\"s\" x=\"600\" y=\"100\" text-anchor=\"middle\">replies 200 = done<\/text>\n<path class=\"e\" d=\"M120 85H166\" marker-end=\"url(#wd-a)\"/><path class=\"e\" d=\"M270 85H316\" marker-end=\"url(#wd-a)\"/><path class=\"e\" d=\"M420 85H496\" marker-end=\"url(#wd-a)\"/>\n<path class=\"e\" d=\"M370 110V160H220V114\" marker-end=\"url(#wd-a)\"/><text class=\"s\" x=\"295\" y=\"152\" text-anchor=\"middle\">error: try again later<\/text>\n<rect class=\"park\" x=\"40\" y=\"170\" width=\"120\" height=\"44\" rx=\"10\"/><text x=\"100\" y=\"197\" text-anchor=\"middle\">Parked (8 fails)<\/text>\n<path class=\"e\" d=\"M220 160V192H164\" marker-end=\"url(#wd-a)\"/>\n<path class=\"eb\" d=\"M600 60V28H370V56\" marker-end=\"url(#wd-b)\"/><text class=\"r\" x=\"485\" y=\"20\" text-anchor=\"middle\">✗ reply lost → sent again → customer gets it twice<\/text>\n<\/svg>"
+  }
+ ],
+ "glossary": [
+  {
+   "term": "Idempotency key",
+   "plain": "An ID sent with each event so the receiver can ignore repeats."
+  }
+ ],
+ "history": [
+  {
+   "at": "2026-11-19 10:40",
+   "event": "Stage 7: 2 findings (1 blocker)"
+  }
+ ]
 }
 </script>
 
@@ -387,6 +389,7 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
   // Local view of the viewer's decisions; mirrored to the db when available.
   var state = { gate: null, gateNote: "", items: {} };
   var db = null, me = null, canWrite = true;
+  var registry = {};
 
   function el(tag, attrs, kids) {
     var n = document.createElement(tag);
@@ -426,105 +429,19 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
   });
   if (DATA.headline) { $("b-headline").hidden = false; $("b-headline").querySelector("span").textContent = DATA.headline; }
 
-  // ---------- Blocks ----------
-  function cellMark(v) {
-    var s = String(v == null ? "" : v);
-    if (/^(yes|y|true|✓)$/i.test(s)) return el("span", { class: "yes", "aria-label": "yes" }, [icon("check", "sm")]);
-    if (/^(no|n|false|✗)$/i.test(s)) return el("span", { class: "no", "aria-label": "no" }, [icon("x", "sm")]);
-    if (/^(partial|some|~)$/i.test(s)) return el("span", { class: "partial", text: "~", "aria-label": "partly" });
-    return document.createTextNode(s);
+  // ---------- Canvas: Claude-authored SVG/HTML ----------
+  function canvas(html, cls) {
+    var box = el("div", { class: "canvas" + (cls ? " " + cls : "") });
+    box.innerHTML = html || "";
+    return box;
   }
-  function mermaidBox(src) {
-    var pre = el("pre", { class: "mermaid" });
-    pre.textContent = src;
-    return el("div", { class: "diagram" }, [pre]);
-  }
-  function renderBlock(b) {
-    if (!b || !b.type) return null;
-    var out = el("div", { class: "block" });
-    switch (b.type) {
-      case "diagram":
-        out.appendChild(mermaidBox(b.mermaid || ""));
-        break;
-      case "compare": {
-        var cols = b.columns || [];
-        var thead = el("tr", null, [el("th", { text: "" })].concat(cols.map(function (c, i) { return el("th", { text: c, class: i === b.pick ? "picked" : null }); })));
-        var rows = (b.rows || []).map(function (r) {
-          return el("tr", null, [el("td", { text: r.label })].concat((r.cells || []).map(function (c, i) {
-            var td = el("td", { class: i === b.pick ? "picked" : null }); td.appendChild(cellMark(c)); return td;
-          })));
-        });
-        out.appendChild(el("div", { class: "tablebox" }, [el("table", { class: "cmp" }, [el("thead", null, [thead]), el("tbody", null, rows)])]));
-        break;
-      }
-      case "stats":
-        out.appendChild(el("div", { class: "stats" }, (b.items || []).map(function (s) {
-          return el("div", { class: "stat", "data-tone": s.tone || null }, [el("b", { text: String(s.value) }), el("span", { text: s.label })]);
-        })));
-        break;
-      case "scope":
-        out.appendChild(el("div", { class: "scope" }, [
-          el("div", { class: "in" }, [el("h4", { text: "In" }), el("ul", { class: "plain" }, (b.in || []).map(function (t) { return el("li", null, [icon("check", "sm"), el("span", { text: t })]); }))]),
-          el("div", { class: "out" }, [el("h4", { text: "Out" }), el("ul", { class: "plain" }, (b.out || []).map(function (t) { return el("li", null, [icon("x", "sm"), el("span", { text: t })]); }))])
-        ]));
-        break;
-      case "flow": {
-        var f = el("div", { class: "flow" });
-        (b.steps || []).forEach(function (s, i) {
-          if (i) f.appendChild(el("span", { class: "arrow", "aria-hidden": "true" }, [icon("arrow", "sm")]));
-          f.appendChild(el("div", { class: "step", "data-state": s.state || null }, [el("span", { text: s.label }), s.note ? el("small", { text: s.note }) : null]));
-        });
-        out.appendChild(f);
-        break;
-      }
-      case "risks": {
-        var g = el("div", { class: "risk", role: "img", "aria-label": "Risk grid: likelihood across, impact up" });
-        var tone = function (l, i) { var s = l + i; return s >= 5 ? "var(--blocker-soft)" : s >= 4 ? "var(--major-soft)" : "var(--surface-2)"; };
-        for (var imp = 3; imp >= 1; imp--) {
-          g.appendChild(el("div", { class: "axis y", text: imp === 3 ? "high" : imp === 1 ? "low" : "" }));
-          for (var lik = 1; lik <= 3; lik++) {
-            var c = el("div", { class: "cell" }); c.style.background = tone(lik, imp);
-            (b.items || []).filter(function (it) { return (it.likelihood || 1) === lik && (it.impact || 1) === imp; })
-              .forEach(function (it) { c.appendChild(el("span", { class: "tag", text: it.label })); });
-            g.appendChild(c);
-          }
-        }
-        g.appendChild(el("div"));
-        ["rare", "likely", "very likely"].forEach(function (t) { g.appendChild(el("div", { class: "axis", text: t })); });
-        out.appendChild(g);
-        out.appendChild(el("div", { class: "caption", text: "Up: how bad. Across: how likely." }));
-        break;
-      }
-      case "points":
-        out.appendChild(el("ul", { class: "plain" }, (b.items || []).map(function (t) { return el("li", null, [icon(b.icon || "arrow", "sm"), el("span", { text: t })]); })));
-        break;
-      case "callout":
-        out.appendChild(el("div", { class: "callout", "data-tone": b.tone || "info" }, [icon(b.tone === "good" ? "check" : b.tone === "info" ? "question" : "risk"), el("span", { text: b.text })]));
-        break;
-      case "beforeAfter":
-        out.appendChild(el("div", { class: "ba" }, [
-          el("div", null, [el("h4", { text: b.beforeLabel || "Before" }), renderBlock(b.before)]),
-          el("div", null, [el("h4", { text: b.afterLabel || "After" }), renderBlock(b.after)])
-        ]));
-        break;
-      case "questions":
-        out.appendChild(el("div", { class: "qs" }, (b.items || []).map(function (q) {
-          var id = "q-" + q.id;
-          var ta = el("textarea", { id: id, rows: "2", maxlength: "800" });
-          ta.addEventListener("change", function () { setItem(q.id, { kind: "question", answer: ta.value.trim(), question: q.q }); });
-          return el("div", { class: "q" }, [el("label", { for: id, text: q.q }), q.hint ? el("small", { text: q.hint }) : null, ta]);
-        })));
-        break;
-      case "files":
-        out.appendChild(el("div", { class: "files" }, (b.items || []).map(function (f) {
-          return el("div", null, [icon("file", "sm"), " ", el("code", { text: f.path }), f.role ? " " + f.role : ""]);
-        })));
-        break;
-      default:
-        return null;
-    }
-    if (b.caption) out.appendChild(el("div", { class: "caption", text: b.caption }));
-    return out;
+  function questionsBox(items) {
+    return el("div", { class: "qs" }, (items || []).map(function (q) {
+      var id = "q-" + q.id;
+      var ta = el("textarea", { id: id, rows: "2", maxlength: "800" });
+      ta.addEventListener("change", function () { setItem(q.id, { kind: "question", answer: ta.value.trim(), question: q.q }); });
+      return el("div", { class: "q" }, [el("label", { for: id, text: q.q }), q.hint ? el("small", { text: q.hint }) : null, ta]);
+    }));
   }
 
   // ---------- Sections ----------
@@ -533,7 +450,8 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
     var head = el("header", null, [icon(sec.icon || "layers"), el("h3", { text: sec.title })]);
     if (sec.status) head.appendChild(el("span", { class: "chip secstate", text: SEC_STATE[sec.status] || sec.status }));
     var box = el("section", { class: "sec" + (sec.wide ? " wide" : ""), id: "sec-" + sec.id, "data-comment-target": "" }, [head]);
-    (sec.blocks || []).forEach(function (b) { var n = renderBlock(b); if (n) box.appendChild(n); });
+    if (sec.html) box.appendChild(canvas(sec.html));
+    if ((sec.questions || []).length) box.appendChild(questionsBox(sec.questions));
     if (sec.approvable) {
       var itemId = sec.decisionId || ("R" + ROUND + "-S-" + sec.id);
       var note = el("textarea", { id: "n-" + itemId, rows: "2", maxlength: "800", placeholder: "What should change?", hidden: "" });
@@ -578,7 +496,7 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
       $("b-filters").appendChild(b);
     });
     var order = { blocker: 0, major: 1, nit: 2 };
-    findings.slice().sort(function (a, b) { return (order[a.severity] || 3) - (order[b.severity] || 3); }).forEach(function (f) {
+    findings.slice().sort(function (a, b) { return (a.severity in order ? order[a.severity] : 3) - (b.severity in order ? order[b.severity] : 3); }).forEach(function (f) {
       var sg = SUGGEST[f.suggestion] || null;
       var body = el("div", { class: "body" }, [
         el("div", { class: "meta" }, [
@@ -588,7 +506,7 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
           f.where ? el("span", { class: "chip" }, [icon("target", "sm"), f.where]) : null
         ]),
         el("h3", { text: f.title }),
-        f.visual ? renderBlock(f.visual) : null,
+        f.visual ? canvas(f.visual, "card-visual") : null,
         f.fix ? el("div", { class: "fixline" }, [icon(f.suggestion === "ESCALATE" ? "question" : "wrench", "sm"), el("span", { text: f.fix })]) : null
       ]);
       var note = el("textarea", { class: "note", id: "n-" + f.id, rows: "2", maxlength: "800", placeholder: "Your note", hidden: "" });
@@ -652,7 +570,6 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
   }
 
   // ---------- Decision state ----------
-  var registry = {};
   function registerItem(id, group, note, card) { registry[id] = { group: group, note: note, card: card }; }
   function paintItem(id) {
     var r = registry[id], v = state.items[id]; if (!r || !v) return;
@@ -764,19 +681,5 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
     } catch (e) { db = null; }
   })();
 
-  // ---------- Diagram fallback: native mermaid first, CDN only if nothing rendered ----------
-  window.addEventListener("load", function () {
-    setTimeout(function () {
-      var pending = Array.prototype.filter.call(document.querySelectorAll("pre.mermaid"), function (p) { return !p.querySelector("svg"); });
-      if (!pending.length) return;
-      var dark = (document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")) === "dark";
-      var s = document.createElement("script");
-      s.src = "https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js";
-      s.onload = function () {
-        try { window.mermaid.initialize({ startOnLoad: false, theme: dark ? "dark" : "neutral", securityLevel: "strict" }); window.mermaid.run({ nodes: pending }); } catch (e) {}
-      };
-      document.head.appendChild(s);
-    }, 1500);
-  });
 })();
 </script>

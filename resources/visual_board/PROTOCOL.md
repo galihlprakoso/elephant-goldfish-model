@@ -6,8 +6,9 @@ SPDX-License-Identifier: Apache-2.0
 
 The board is one Claude Artifact per feature. Every EGM skill keeps it up to
 date, and the user reviews, approves, and gives feedback on it instead of in the
-terminal. The board shows pictures, not prose: someone who opens it should
-understand the state and decide in under a minute without reading a paragraph.
+terminal. The board shows pictures you draw, not prose: someone who opens it
+should understand the state and decide in about a minute without reading a
+paragraph.
 
 The Markdown files (`concepts_brief.md`, `design_draft.md`, stage reports) stay
 the full written record. Goldfish reviewers read them, implementers build from
@@ -56,9 +57,9 @@ rail shows the whole journey.
      <board dir>/board.json <board dir>/board.html
    ```
 
-   The script prints `note:` lines about the data (a section with no visual,
-   a title that is too long, a gate missing while it is the user's turn). They
-   are facts for you to weigh, not errors; fix the ones that matter. Without
+   The script prints `note:` lines with facts about the data (words per
+   picture, Mermaid-looking text, repeated ids, a gate missing while it is the
+   user's turn). They are for you to weigh, not errors. Without
    Python, copy `resources/visual_board/board.html` and replace the contents of
    its `<script id="egm-board-data">` block with the JSON, escaping `</` as
    `<\/`.
@@ -84,51 +85,76 @@ rail shows the whole journey.
    `Board updated: Stage 7 found 4 issues (1 blocker). Decide on the board and press Send to Claude.`
    Do not repeat the board's content in chat.
 
-## 4. Visual-first rules
+## 4. Draw for the reader's brain
 
-These rules are the point of the board. Apply them every time you write
-`board.json`.
+You draw every picture yourself, as inline SVG or HTML. There is no diagram
+language and no catalogue of chart types: Mermaid text does not render here.
+Choose the picture the way a good engineer sketches on a whiteboard for a
+colleague, from what this idea needs and what this reader already knows.
 
-1. **A picture of each idea, not a copy of its text.** Never paste paragraphs
-   from the Markdown. Turn each idea into the block that shows it:
+The reader is a developer reviewing a lot of work. Their working memory is the
+scarce resource. A board succeeds when they understand the state and can decide
+in about a minute, without opening the Markdown. These principles explain why
+some pictures land and others don't; apply them with judgement.
 
-   | The content is… | Use |
-   | --- | --- |
-   | a sequence, request path, lifecycle | `diagram` (flowchart, sequenceDiagram, stateDiagram-v2) or `flow` |
-   | components and how they connect | `diagram` (flowchart with subgraphs) |
-   | a choice between options | `compare` with `pick` set |
-   | what is in and out of scope | `scope` |
-   | risks | `risks` (likelihood × impact grid) |
-   | counts, limits, sizes, budgets | `stats` |
-   | a proposed change | `beforeAfter` |
-   | a question only the user can answer | `questions` |
-   | source files involved | `files` |
+* **The picture carries the idea; words only label it.** People take in and
+  remember an image with labels far better than the same idea in prose (picture
+  superiority, dual coding). If you find yourself writing a paragraph, there is a
+  picture you have not drawn yet. Do not narrate a picture in text next to it.
+* **Spend attention on what needs a decision.** Everything on the board competes
+  for the same few slots of working memory (cognitive load). Leave out what
+  doesn't help the reader judge the document. Make the thing that is wrong, new,
+  or undecided the most visible thing on the page.
+* **Use what the eye sees before reading.** Colour, size, position, and shape are
+  noticed before any word is read (pre-attentive processing). Give each colour
+  one meaning and keep it across the whole board (the tokens below: bad, good,
+  warning, new). Never make the reader infer status from colour alone: put a ✓,
+  ✗, or a word on it too.
+* **Make space mean something.** Things that belong together sit together or
+  share a box; flow goes in one direction; cause sits before effect (Gestalt
+  proximity, common region, connectedness). Put a label on or beside its thing,
+  not in a legend far away.
+* **Small chunks.** People hold about four things at once. Group, split, or
+  number steps rather than drawing one dense picture. Start from the narrowest
+  picture that answers the question; show the whole system only when the
+  question is about the whole system.
+* **Map onto what they already know.** A familiar metaphor (a queue at a
+  counter, a drawer, a door) or a concrete example ("event 42 arrives twice")
+  makes an abstract mechanism click faster than a generic box.
+* **Show change as change.** When something is proposed, the reader wants to see
+  the difference: today next to after, with the difference marked.
+* **Plain words.** Name a part by what it does, not by its code name. Put each
+  term a newcomer would not know in `glossary`. Give numbers their unit and
+  what they count ("3 of 12 tests"), never a bare ratio.
+* **Be exact.** A picture is a claim. Every box, arrow, and number must match the
+  document and the code. A clean picture that is wrong is worse than none.
 
-2. **Every section opens with a visual block.** `points` and `callout` may
-   follow it, never replace it.
-3. **Word budgets** (hard limits for the page, not for the Markdown):
+Before publishing, ask: could this reader decide from the board alone, in a
+minute? If not, improve the picture rather than adding words.
 
-   | Field | Limit |
-   | --- | --- |
-   | `headline` | 14 words |
-   | gate `question` | 12 words; option `label` 7 words |
-   | `caption`, `callout.text` | 20 words |
-   | `points` | 5 items, 12 words each |
-   | finding `title` | 10 words |
-   | finding `fix` | 25 words |
-   | diagram node label | 4 words |
-   | glossary `plain` | 15 words |
+### What the page gives you
 
-4. **Diagrams stay small.** At most 12 nodes. Split a larger picture into two
-   sections. Use plain Mermaid without colors or `style`/`classDef` lines; the
-   page themes them. Quote labels that contain punctuation: `A["Retry (x8)"]`.
-5. **Every finding points at the picture.** Set `where` to the section name.
-   When the problem lives in a flow or structure, add a `visual` (usually
-   `flow`) with the broken step marked `"state": "bad"` and the proposed step
-   marked `"state": "new"`.
-6. **Plain words.** Add every term a newcomer would not know to `glossary`.
-7. **The one-minute test.** Before publishing, ask: could the user decide from
-   the board alone? If they would need the Markdown, add a visual, not words.
+* Each section's `html` (and a finding's `visual`) is inserted as-is inside a
+  card. Scripts in it do not run. A `<style>` in it applies to the whole page, so
+  prefix your class names and SVG ids per section; `render_board.py` reports
+  ids used twice.
+* Colour tokens, already set for light and dark mode. Use them through CSS
+  (`style="fill:var(--good-soft)"` or a scoped `<style>`); SVG presentation
+  attributes such as `fill="var(--x)"` do not resolve variables. `--fg`,
+  `--muted`, `--bg`, `--surface`, `--surface-2`, `--line`, `--accent` (orange),
+  `--elephant` (slate), `--blocker`/`--blocker-soft` (bad, red),
+  `--major`/`--major-soft` (warning, amber), `--good`/`--good-soft` (green),
+  `--info`/`--info-soft` (new or proposed, blue). Fonts: `--font-body`,
+  `--font-display`, `--font-mono`.
+* Space: the page is at most 1180px wide. A section is about 560px wide, or the
+  full width with `"wide": true`; phones are about 360px. An SVG with a
+  `viewBox` scales to fit, and its text scales with it, so text in a wide drawing
+  gets small on a phone. HTML with flex or grid reflows instead.
+* Icons: `<svg class="icon"><use href="#i-NAME"/></svg>` for the names listed
+  under the schema. Inline any other icon as SVG; do not load icon fonts or
+  scripts from a CDN.
+* `render_board.py` prints facts after each render, such as the visible word
+  count of each picture, Mermaid-looking text, and repeated ids. Weigh them.
 
 ## 5. `board.json` schema
 
@@ -157,39 +183,29 @@ These rules are the point of the board. Apply them every time you write
     "severity": "blocker",    // blocker | major | nit
     "lens": "egm-design",     // reviewer that raised it
     "title": "Retries can deliver an event twice",
-    "where": "Delivery flow",
+    "where": "How a delivery moves", // the section it points at
     "suggestion": "PROPOSE FIX", // PROPOSE FIX | CONTEST | ESCALATE | DECLINE, or omit
-    "fix": "Add an idempotency key per event.",
-    "visual": {"type": "flow", "steps": [{"label": "Retry", "state": "bad"}]}
+    "fix": "Send an idempotency key with every event.",
+    "visual": "<svg viewBox=…>…</svg>" // optional: your picture of the problem or fix
   }],
   "sections": [{
     "id": "flow", "title": "How a delivery moves", "icon": "flow",
-    "wide": false,            // true spans the full width (big diagrams)
+    "wide": true,             // spans the full width
     "status": "draft",        // draft | approved | changed | new, or omit
     "approvable": false,      // true adds Approve / Ask for changes buttons
-    "blocks": [{"type": "diagram", "mermaid": "flowchart LR\n A-->B", "caption": "…"}]
+    "html": "<svg viewBox=…>…</svg>", // your picture: inline SVG and/or HTML
+    "questions": [{"id": "R1-Q1", "q": "Peak events per second?", "hint": "rough is fine"}]
   }],
   "glossary": [{"term": "Idempotency key", "plain": "An ID that lets the receiver ignore repeats."}],
   "history": [{"at": "2026-11-19 10:40", "event": "Stage 7: 4 findings"}]
 }
 ```
 
-Block shapes:
+The page draws the frame: header, stage rail, the gate, finding cards with their
+buttons, section approval buttons, answer boxes for `questions`, glossary, and
+log. Everything inside a section is yours.
 
-* `diagram`: `{mermaid, caption?}`
-* `compare`: `{columns: [..], rows: [{label, cells: [..]}], pick?: <column index>}`.
-  Cells `yes`, `no`, `partial` draw as marks; other cells show as short text.
-* `stats`: `{items: [{label, value, tone?: good|warn|bad}]}`
-* `scope`: `{in: [..], out: [..]}`
-* `flow`: `{steps: [{label, note?, state?: bad|new|good}]}`
-* `risks`: `{items: [{label, likelihood: 1-3, impact: 1-3}]}`
-* `points`: `{items: [..], icon?}`
-* `callout`: `{tone: info|warn|bad|good, text}`
-* `beforeAfter`: `{before: <block>, after: <block>, beforeLabel?, afterLabel?}`
-* `questions`: `{items: [{id, q, hint?}]}`. Use ids like `R1-Q1`.
-* `files`: `{items: [{path, role?}]}`
-
-Section icons: `flow`, `layers`, `scope`, `risk`, `compare`, `check`,
+Icon names for `icon`: `flow`, `layers`, `scope`, `risk`, `compare`, `check`,
 `question`, `file`, `eye`, `zoom`, `compass`, `code`, `wrench`, `grid`, `pen`,
 `spark`, `clock`, `target`, `chat`, `dollar`, `user`, `book`.
 
@@ -207,8 +223,8 @@ Wherever a skill presents a single-select gate:
    `ask_question`): the board is the question. This replaces the skill's
    "one question, sole tool call" rule; the yield rule still applies.
 4. Per-item decisions belong on the board too. Findings get Accept / Skip /
-   Discuss buttons, an approvable section gets Approve / Ask for changes, and a
-   `questions` block takes open answers. Skills that would walk the user through
+   Discuss buttons, an approvable section gets Approve / Ask for changes, and a section's
+   `questions` take open answers. Skills that would walk the user through
    items one by one in chat (for example the `egm-resolve` interactive
    breakdown) show the items as finding cards instead.
 

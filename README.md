@@ -17,8 +17,8 @@ Develop ideas with context and review documents with fresh eyes. EGM is an open-
 
 > **This fork adds the visual board.** In Claude Code and Claude Cowork, each EGM
 > feature gets one private claude.ai Artifact. Brainstorm, draft, review, and
-> resolve all update it with diagrams, option tables, scope and risk grids, and
-> finding cards. You review there: Accept / Skip / Discuss each finding, approve
+> resolve all update it with pictures Claude draws for the idea at hand (no
+> diagram language, no fixed chart types), and finding cards. You review there: Accept / Skip / Discuss each finding, approve
 > sections, pick the next step, and press **Send to Claude**. The Markdown files
 > are still written for reviewers and for your repo. See
 > [the board protocol](resources/visual_board/PROTOCOL.md). Other harnesses keep

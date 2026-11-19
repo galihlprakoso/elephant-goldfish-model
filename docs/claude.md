@@ -28,8 +28,9 @@ main context.
 
 When the session has the `Artifact` tool, every EGM skill keeps one visual
 board per feature, a private claude.ai Artifact. The user reviews and decides
-there: diagrams, option tables, scope and risk grids, finding cards with
-Accept / Skip / Discuss, section approvals, and gate buttons. **Send to Claude**
+there: pictures the model draws as inline SVG or HTML for each idea, guided by
+principles of how readers take in visuals, finding cards with Accept / Skip /
+Discuss, section approvals, and gate buttons. **Send to Claude**
 on the board brings the decisions back into this session. The rules are in
 `${CLAUDE_PLUGIN_ROOT}/resources/visual_board/PROTOCOL.md`, and what each skill
 shows is in `skill_maps.md` next to it. Turn it off with the line

@@ -22,8 +22,19 @@ SEVERITIES = {"blocker", "major", "nit"}
 TURNS = {"you", "claude", "reviewers", "done"}
 
 
+MERMAID = re.compile(
+    r"^\s*(flowchart|graph|sequenceDiagram|stateDiagram|classDiagram|erDiagram|"
+    r"gantt|pie|mindmap|journey)\b", re.MULTILINE)
+TAG = re.compile(r"<(style|script)\b.*?</\1>|<[^>]+>", re.DOTALL | re.IGNORECASE)
+ID_ATTR = re.compile(r'\bid="([^"]+)"')
+
+
+def visible_words(html: str) -> int:
+  return len(TAG.sub(" ", html or "").split())
+
+
 def warnings(data: dict) -> list[str]:
-  """Facts about the board worth showing to the agent; never blocks a render."""
+  """Facts about the board for the agent to weigh; never blocks a render."""
   out = []
   if data.get("turn") not in TURNS:
     out.append(f"turn should be one of {sorted(TURNS)}")
@@ -31,23 +42,37 @@ def warnings(data: dict) -> list[str]:
     out.append("session.example is true: Send to Claude stays off. Remove it.")
   if data.get("turn") == "you" and not data.get("gate"):
     out.append("turn is 'you' but there is no gate: the viewer has no button.")
+  pictures = [(f"section {s.get('id')}", s.get("html", ""))
+              for s in data.get("sections", [])]
+  pictures += [(f"finding {f.get('id')}", f.get("visual", ""))
+               for f in data.get("findings", []) if f.get("visual")]
+  seen_ids: dict[str, str] = {}
+  for name, html in pictures:
+    if not isinstance(html, str):
+      out.append(f"{name}: html/visual must be a string of SVG or HTML")
+      continue
+    if MERMAID.search(html):
+      out.append(f"{name}: looks like Mermaid text; nothing renders it here")
+    if "<script" in html.lower():
+      out.append(f"{name}: <script> inside html does not run")
+    for i in ID_ATTR.findall(html):
+      if i in seen_ids and seen_ids[i] != name:
+        out.append(f"{name}: id {i!r} also used in {seen_ids[i]}; "
+                   "url(#...) references will point at the first one")
+      seen_ids.setdefault(i, name)
+  for s in data.get("sections", []):
+    if not s.get("html") and not s.get("questions"):
+      out.append(f"section {s.get('id')}: empty (no html, no questions)")
   for f in data.get("findings", []):
     if f.get("severity") not in SEVERITIES:
       out.append(f"finding {f.get('id')}: severity {f.get('severity')!r}")
-    if len(str(f.get("title", "")).split()) > 12:
-      out.append(f"finding {f.get('id')}: title over 12 words")
-    if len(str(f.get("fix", "")).split()) > 30:
-      out.append(f"finding {f.get('id')}: fix over 30 words")
-  for s in data.get("sections", []):
-    visual = any(
-        b.get("type") in {"diagram", "compare", "stats", "scope", "flow",
-                          "risks", "beforeAfter", "questions"}
-        for b in s.get("blocks", []))
-    if not visual:
-      out.append(f"section {s.get('id')}: no visual block")
   ids = [f.get("id") for f in data.get("findings", [])]
   if len(ids) != len(set(ids)):
     out.append("finding ids repeat; decisions would collide")
+  counts = ", ".join(f"{n.split()[1]} {visible_words(h)}"
+                     for n, h in pictures if isinstance(h, str))
+  if counts:
+    out.append(f"visible words per picture: {counts}")
   return out
 
 
