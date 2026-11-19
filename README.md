@@ -15,6 +15,15 @@
 
 Develop ideas with context and review documents with fresh eyes. EGM is an open-source plugin for AI assistants.
 
+> **This fork adds the visual board.** In Claude Code and Claude Cowork, each EGM
+> feature gets one private claude.ai Artifact. Brainstorm, draft, review, and
+> resolve all update it with diagrams, option tables, scope and risk grids, and
+> finding cards. You review there: Accept / Skip / Discuss each finding, approve
+> sections, pick the next step, and press **Send to Claude**. The Markdown files
+> are still written for reviewers and for your repo. See
+> [the board protocol](resources/visual_board/PROTOCOL.md). Other harnesses keep
+> the original chat flow. Turn the board off with `EGM board: off`.
+
 **Elephant** holds your project context and drafts the specification. **Goldfish** reviewers examine the draft and referenced source material without the earlier conversation, helping expose unstated assumptions and blind spots. **You** make the architectural trade-offs and approve the specification before implementing.
 
 The built-in draft and design-review workflow targets software specifications. For other documents, choose reviewers and standards with `/egm-review-loop`. Bootstrap and drift reporting apply to software codebases.
@@ -40,7 +49,7 @@ For the **Antigravity App** and **Antigravity for IDEs** (Visual Studio Code ext
 ### Claude Code
 
 ```sh
-claude plugin marketplace add google/elephant-goldfish-model
+claude plugin marketplace add galihlprakoso/elephant-goldfish-model
 claude plugin install egm@egm
 ```
 

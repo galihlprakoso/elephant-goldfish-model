@@ -9,14 +9,13 @@ description: Bootstrap directory README.md files across a repository subtree.
 
 When running in Codex or ChatGPT Work, first read [Codex integration](../../docs/codex.md).
 In Claude Code or Cowork, read `${CLAUDE_PLUGIN_ROOT}/docs/claude.md` first.
+With the `Artifact` tool, use the visual board: `${CLAUDE_PLUGIN_ROOT}/resources/visual_board/PROTOCOL.md`.
 
 ## Overview
 
 This skill automates the creation, correction, formatting, and correctness
 verification of Elephant-and-Goldfish Model (EGM) compliant `README.md` files
-across a directory tree. It establishes clear architectural contracts
-(interfaces, invariants, and side effects) for both human developers and AI
-assistants.
+across a directory tree.
 
 *   **Peanuts**: Leaf-level Component Package READMEs containing specific file
     contracts.

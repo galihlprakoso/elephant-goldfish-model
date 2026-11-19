@@ -23,9 +23,30 @@ another EGM skill (for example `egm-review-loop` or `egm-resolve` during review
 Stages 7 and 9), read its `SKILL.md` and follow it in the same thread. Do not
 use the `Skill` tool for EGM skills. Keep drafting and orchestration in the
 main context.
-Claude Code has no artifact comments. To request draft revisions, edit
-`design_draft.md` directly or add `<!-- -->` comments in it, or give the notes
-in chat; the model reads the draft again before each revision.
+
+## Visual board
+
+When the session has the `Artifact` tool, every EGM skill keeps one visual
+board per feature, a private claude.ai Artifact. The user reviews and decides
+there: diagrams, option tables, scope and risk grids, finding cards with
+Accept / Skip / Discuss, section approvals, and gate buttons. **Send to Claude**
+on the board brings the decisions back into this session. The rules are in
+`${CLAUDE_PLUGIN_ROOT}/resources/visual_board/PROTOCOL.md`, and what each skill
+shows is in `skill_maps.md` next to it. Turn it off with the line
+`EGM board: off` in the prompt, `CLAUDE.md`, or `AGENTS.md`.
+
+The board needs Python 3 to render (`render_board.py`) and the `ArtifactData`
+and `ArtifactComments` tools to read decisions and reply. Load them with
+ToolSearch when the session lists them as deferred. Briefs, drafts, and
+reports are still written as Markdown files: they stay the record that
+reviewers read and that gets checked in.
+
+Without the board, request draft revisions by editing `design_draft.md`
+directly, adding `<!-- -->` comments in it, or giving the notes in chat; the
+model reads the draft again before each revision.
+
+## Files and reviewers
+
 Write briefs, drafts, and reports to the user's working directory. The
 per-session scratchpad is not the artifact directory: it belongs to one
 session, and the deliverables must outlive it.
