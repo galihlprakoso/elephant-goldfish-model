@@ -12,8 +12,8 @@ description: >-
 # Review, Validation & Automated Remediation
 
 When running in Codex or ChatGPT Work, first read [Codex integration](../../docs/codex.md).
-In Claude Code or Cowork, read `${CLAUDE_PLUGIN_ROOT}/docs/claude.md` first.
-With the `Artifact` tool, use the visual board: `${CLAUDE_PLUGIN_ROOT}/resources/visual_board/PROTOCOL.md`.
+In Claude Code or Cowork, read `${CLAUDE_PLUGIN_ROOT}/docs/claude.md` first; with the `Artifact` tool, also
+`${CLAUDE_PLUGIN_ROOT}/resources/visual_board/PROTOCOL.md`: its board gates replace question tools.
 
 Reviews and validates a design document through specialized reviewer personas.
 
@@ -127,9 +127,8 @@ If your harness has no subagent tool, stop and tell the user: a review in the sa
         individual stage `5`, `6`, `7`, `8`, `9`), map to the corresponding
         preset or subflow and bypass the interactive preset selection gate.
     *   Otherwise (if `Step` was omitted), you **MUST** present the Curated
-        Pipeline Presets single-select gate to the user (using a structured
-        question tool such as `ask_question` if your harness has one, or plain
-        chat).
+        Pipeline Presets single-select gate (on the board, or a structured
+        question tool such as `ask_question`, or plain chat).
 2.  **Modal Invariants & Wire Payload**:
 
     *   The question payload **MUST** contain strictly one question object
