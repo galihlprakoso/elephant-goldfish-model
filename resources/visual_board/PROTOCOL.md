@@ -27,7 +27,8 @@ Claude Cowork). It is **off** when:
 When it is off, run the skill exactly as written, with gates in chat. When it is
 on, also read the running skill's part of [skill_maps.md](skill_maps.md) (same
 folder), and follow both wherever the skill says to present a gate, notify the
-user of a report, or ask for review. Everything else in the skill (Goldfish
+user of a report, ask for review, or tell the user to start another EGM skill
+(section 6, "Next step"). Everything else in the skill (Goldfish
 isolation, stage order, file outputs, the critique rules) still applies.
 
 ## 2. Files
@@ -64,7 +65,12 @@ rail shows the whole journey.
    its `<script id="egm-board-data">` block with the JSON, escaping `</` as
    `<\/`.
 3. Publish `board.html` with the `Artifact` tool.
-   * **First publish:** pass `icon: "review"`, a one-sentence `description`,
+   * **Name:** the renderer names the page `EGM Board - <session.title>`, and
+     that is the artifact's name in the gallery and the tab. Make
+     `session.title` the task itself in a few plain words ("Webhook retries"),
+     so the user can tell boards apart in a list.
+   * **First publish:** pass `icon: "review"`, a one-sentence `description`
+     saying what the task is and where it stands,
      `contract: "latest"`, and these capabilities:
 
      ```json
@@ -161,7 +167,7 @@ minute? If not, improve the picture rather than adding words.
 ```jsonc
 {
   "session": {
-    "title": "Webhook delivery",          // feature name
+    "title": "Webhook delivery",          // the task in plain words; names the artifact
     "skill": "egm-review",                // skill now running
     "target": "design_draft.md",          // document under work
     "round": 1,                           // bump on each re-run of a stage
@@ -230,6 +236,24 @@ Wherever a skill presents a single-select gate:
 
 The user may still answer in chat. A chat answer counts the same as a board
 answer.
+
+### Next step
+
+The user should never have to go back to the terminal to move on. Wherever a
+skill would tell the user to start another EGM skill (brainstorm to draft, draft
+to review, review findings to resolve), or a skill ends with a natural next
+step, make that step a button instead:
+
+* Put it in a gate (`R<n>-G-next`, or the skill's own handoff gate), with the
+  next EGM step as the first option, labelled by what it does ("Review with
+  Goldfishes"), plus the skill's other options and a way to stop.
+* When the user picks it, start that skill yourself in this thread: read its
+  `SKILL.md` (`${CLAUDE_PLUGIN_ROOT}/skills/<name>/SKILL.md`; the `Skill` tool
+  refuses EGM skills, see `docs/claude.md`) and follow it, with the target the
+  previous skill produced. Keep the same board: move the rail and continue.
+  Skip the new skill's intake questions that the board already answered.
+* Only `turn: "done"` with no gate means nothing is left to do. If the work
+  could go on, there is a button for it.
 
 ## 7. Reading the user's reply
 

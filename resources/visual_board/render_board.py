@@ -9,6 +9,7 @@ so the HTML never has to be rewritten by hand.
 """
 
 import argparse
+import html as html_lib
 import json
 from pathlib import Path
 import re
@@ -27,6 +28,13 @@ MERMAID = re.compile(
     r"gantt|pie|mindmap|journey)\b", re.MULTILINE)
 TAG = re.compile(r"<(style|script)\b.*?</\1>|<[^>]+>", re.DOTALL | re.IGNORECASE)
 ID_ATTR = re.compile(r'\bid="([^"]+)"')
+TITLE = re.compile(r"<title>.*?</title>", re.DOTALL)
+
+
+def page_title(data: dict) -> str:
+  """The artifact's name in the gallery and the browser tab."""
+  name = str(data.get("session", {}).get("title") or "").strip()
+  return "EGM Board" + (f" - {name}" if name else "")
 
 
 def visible_words(html: str) -> int:
@@ -36,6 +44,8 @@ def visible_words(html: str) -> int:
 def warnings(data: dict) -> list[str]:
   """Facts about the board for the agent to weigh; never blocks a render."""
   out = []
+  if not str(data.get("session", {}).get("title") or "").strip():
+    out.append("session.title is empty: the artifact is named only 'EGM Board'")
   if data.get("turn") not in TURNS:
     out.append(f"turn should be one of {sorted(TURNS)}")
   if data.get("session", {}).get("example"):
@@ -91,6 +101,8 @@ def main() -> int:
   if count != 1:
     print("template has no egm-board-data block", file=sys.stderr)
     return 1
+  title = html_lib.escape(page_title(data), quote=False)
+  html = TITLE.sub(lambda m: f"<title>{title}</title>", html, count=1)
   Path(args.out).write_text(html, encoding="utf-8")
   print(f"wrote {args.out}")
   for w in warnings(data):

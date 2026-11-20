@@ -415,7 +415,7 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
 
   // ---------- Header ----------
   $("b-title").textContent = S.title || "EGM Board";
-  document.title = (S.title ? S.title + " · " : "") + "EGM Board";
+  document.title = "EGM Board" + (S.title ? " - " + S.title : "");
   if (S.skill) $("b-skill").textContent = S.skill; else $("b-skill").hidden = true;
   if (S.target) $("b-target").textContent = S.target + (ROUND > 1 ? " · round " + ROUND : ""); else $("b-target").hidden = true;
   var TURN = { you: "Your turn", claude: "Claude is working", reviewers: "Reviewers are reading", done: "Done" };

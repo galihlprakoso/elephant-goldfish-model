@@ -22,7 +22,9 @@ Rail: `brainstorm`, then `draft` and `review` as `todo`.
   leaves out, the alternatives it beat and why, and what could go wrong. Each
   Goldfish objection is a finding card; the 2–3 the skill highlights lead the
   `headline`.
-* **Handoff gate:** `R<n>-G-handoff` with `publish`, `draft`, `refine`, `stop`.
+* **Handoff gate:** `R<n>-G-handoff` with `draft`, `publish`, `refine`, `stop`.
+  On `draft`, start `egm-draft` on the brief yourself (PROTOCOL.md, "Next step")
+  instead of telling the user to run it.
 
 ## egm-draft
 
@@ -39,6 +41,9 @@ Rail: `brainstorm` (done or skipped), `draft`, then the review stages as
 * **Option decisions:** when the skill asks the user to choose between design
   options, the gate's options are the candidates, and the section makes their
   trade-offs visible.
+* **Handoff:** instead of recommending `/egm:egm-review`, show the finished
+  design and the gate `R<n>-G-next` with `review` (Review with Goldfishes),
+  `revise`, `stop`. On `review`, start `egm-review` on the design yourself.
 
 ## egm-review
 
@@ -57,13 +62,17 @@ Readiness. Mark stages a preset skips as `skipped`.
   items the user decided.
 * **Uninterrupted preset:** publish once at the end with all stages `done` and
   the consolidated findings.
+* **End of review:** after Stage 9 concludes, the gate `R<n>-G-next` offers what
+  can follow (for example `resolve` remaining findings, `drift` to check the
+  code against the design once it exists, `stop`).
 
 ## egm-review-loop
 
 Rail: one stage per reviewer group run, finding cards per reviewer. The
 aggregated resolution hand-off gate goes on the board with the options the skill
 lists (auto accept, continue, interactive). On "interactive", the cards are the
-walkthrough.
+walkthrough. When it runs on its own (not under `egm-review`), its final
+checkpoint is the gate `R<n>-G-next` (next stage, another round, stop).
 
 ## egm-resolve
 
