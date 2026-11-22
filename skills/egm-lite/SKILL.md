@@ -14,8 +14,8 @@ description: >-
 # EGM-Lite: Rapid Ad-Hoc Engineering Protocol
 
 When running in Codex or ChatGPT Work, first read [Codex integration](../../docs/codex.md).
-In Claude Code or Cowork, read `${CLAUDE_PLUGIN_ROOT}/docs/claude.md` first; with the `Artifact` tool, also
-`${CLAUDE_PLUGIN_ROOT}/resources/visual_board/PROTOCOL.md`: its board gates replace question tools.
+In Claude Code or Cowork, read `${CLAUDE_PLUGIN_ROOT}/docs/claude.md` first. In any harness, also read
+[the board protocol](../../resources/visual_board/PROTOCOL.md): its board gates replace question tools.
 
 Act as the user's development partner for small, rapid iterations. Strictly
 adhere to these operational rules for every task, balancing critical thinking

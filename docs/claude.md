@@ -27,13 +27,12 @@ main context.
 ## Visual board
 
 When the session has the `Artifact` tool, every EGM skill keeps one visual
-board per feature, a private claude.ai Artifact. The user reviews and decides
-there: pictures the model draws as inline SVG or HTML for each idea, guided by
-principles of how readers take in visuals, finding cards with Accept / Skip /
-Discuss, section approvals, and gate buttons. **Send to Claude**
-on the board brings the decisions back into this session. The rules are in
-`${CLAUDE_PLUGIN_ROOT}/resources/visual_board/PROTOCOL.md`, and what each skill
-shows is in `skill_maps.md` next to it. Turn it off with the line
+board per feature, a private claude.ai Artifact. The user sees pictures the
+model draws for each idea and makes only the decisions that need them there;
+**Send to Claude** on the board brings the reply back into this session. The
+rules are in `${CLAUDE_PLUGIN_ROOT}/resources/visual_board/PROTOCOL.md`, and
+what each skill shows is in `skill_maps.md` next to it. Without the `Artifact`
+tool the board is a local HTML file instead. Turn it off with the line
 `EGM board: off` in the prompt, `CLAUDE.md`, or `AGENTS.md`.
 
 The board needs Python 3 to render (`render_board.py`) and the `ArtifactData`

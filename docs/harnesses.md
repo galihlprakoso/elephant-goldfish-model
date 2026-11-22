@@ -142,6 +142,15 @@ Commit approved specifications in `docs/designs/` and project rules in
 `.dev/docs` to `.gitignore` only to keep scratch drafts out of git before
 approval.
 
+## Visual Board
+
+Every harness gets the visual board unless `EGM board: off` is set
+([protocol](../resources/visual_board/PROTOCOL.md)). Claude Code and Claude
+Cowork publish it as a private claude.ai Artifact, and **Send to Claude** brings
+the reply back into the session. Other harnesses render it as a local HTML file
+with `render_board.py --local`; the user opens it in a browser, and the main
+button copies the reply to paste into chat. It needs Python 3 and a browser.
+
 ## Support Status & Contributing Other Harnesses
 
 **Antigravity CLI**, **Claude Code**, and **Codex** pass automated installation

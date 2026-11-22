@@ -4,102 +4,73 @@ SPDX-License-Identifier: Apache-2.0
 
 # What each skill puts on the board
 
-Read [PROTOCOL.md](PROTOCOL.md) first. Each part below says what the reader needs
-to grasp at that point of the skill, and which gates move to the board. How to
-draw it is yours to decide, following the principles in PROTOCOL.md section 4.
-Stage ids are the `stages[].id` values for the rail.
+Read [PROTOCOL.md](PROTOCOL.md) first. Each part says what the reader needs to
+grasp at that point and which decisions move to the board. How to draw it is
+yours to decide. Keep the skill's gate options and their meaning; shorten the
+labels and put the recommended step first.
 
 ## egm-brainstorm
 
-Rail: `brainstorm`, then `draft` and `review` as `todo`.
-
-* **Clarifying:** the reader should see the idea as you currently understand it
-  and where your understanding has holes. The open questions go in a section's
-  `questions`; ask them briefly in chat too, so the user can answer either way.
-* **Readiness gate:** `R<n>-G-ready` with `review` (Review with Goldfishes) and
-  `clarify` (Keep clarifying).
-* **After the Goldfish review:** the reader should grasp the concept, what it
-  leaves out, the alternatives it beat and why, and what could go wrong. Each
-  Goldfish objection is a finding card; the 2–3 the skill highlights lead the
-  `headline`.
-* **Handoff gate:** `R<n>-G-handoff` with `draft`, `publish`, `refine`, `stop`.
-  On `draft`, start `egm-draft` on the brief yourself (PROTOCOL.md, "Next step")
-  instead of telling the user to run it.
+* **Clarifying:** the idea as you understand it, and where the holes are. Open
+  questions go in a section's `questions`; ask them briefly in chat too.
+* **Readiness gate** `R<n>-G-ready`: `review`, `clarify`.
+* **After the Goldfish review:** the concept, what it leaves out, the
+  alternatives it beat, what could go wrong. Objections that need the user are
+  calls.
+* **Handoff gate** `R<n>-G-handoff`: `draft` first, then `publish`, `refine`,
+  `stop`. On `draft`, start `egm-draft` yourself.
 
 ## egm-draft
 
-Rail: `brainstorm` (done or skipped), `draft`, then the review stages as
-`todo`.
-
-* **Each section approval:** the drafted part becomes one board section with
-  `approvable: true` and `status: "draft"`, plus the gate
-  `R<n>-G-draft-<section>` with `approve` and `revise`. The reader should be
-  able to approve the design decision itself from the picture: what the design
-  is, how it behaves, what it was chosen over, and what the work involves.
-* Approved sections keep `status: "approved"` and lose `approvable`. A section
-  approve on the card and the gate choice mean the same thing; take either.
-* **Option decisions:** when the skill asks the user to choose between design
-  options, the gate's options are the candidates, and the section makes their
-  trade-offs visible.
-* **Handoff:** instead of recommending `/egm:egm-review`, show the finished
-  design and the gate `R<n>-G-next` with `review` (Review with Goldfishes),
-  `revise`, `stop`. On `review`, start `egm-review` on the design yourself.
+* **Each drafted part** is a section the user can approve by leaving it alone or
+  change with a note: what the design is, how it behaves, what it was chosen
+  over, and what the work involves. The gate `R<n>-G-draft-<section>` moves on.
+* **Option decisions** are calls whose `choices` are the candidates, with their
+  trade-offs visible in the section.
+* **Handoff** `R<n>-G-next`: `review` (Review with Goldfishes) first, then
+  `revise`, `stop`. On `review`, start `egm-review` yourself.
 
 ## egm-review
 
-Rail: `s5` Zoom out, `s6` Comprehension, `s7` Critic, `s8` Zoom out 2, `s9`
-Readiness. Mark stages a preset skips as `skipped`.
-
-* **Preset gate:** `R1-G-preset` with `interactive`, `consolidated`, `feature`,
+* **Rail:** `s5` Zoom out, `s6` Comprehension, `s7` Critic, `s8` Zoom out 2, `s9`
+  Readiness; stages a preset skips are `skipped`.
+* **Preset gate** `R1-G-preset`: `interactive`, `consolidated`, `feature`,
   `implementation`.
-* **Each stage:** its findings become cards (`lens` = reviewer). The reader
-  should also see which reviewers ran and which did not.
-* **Stage 6 (Comprehension):** the reader should see the gap between what the
-  document means and what a fresh reader understood. Gaps become findings.
-* **Stage gates** (`R<n>-G-s5` … `R<n>-G-s9`): keep the skill's options:
-  `proceed`, `resolve` (Stages 7 and 9), `manual`, `pause`. On `resolve`, run
-  `egm-resolve` with the board decisions already given: do not ask again about
-  items the user decided.
-* **Uninterrupted preset:** publish once at the end with all stages `done` and
-  the consolidated findings.
-* **End of review:** after Stage 9 concludes, the gate `R<n>-G-next` offers what
-  can follow (for example `resolve` remaining findings, `drift` to check the
-  code against the design once it exists, `stop`).
+* **Each stage:** which reviewers ran, and what they found, pinned to the part
+  of the design it concerns. Stage 6 shows the gap between what the document
+  means and what a fresh reader understood.
+* **Stage gates** `R<n>-G-s5` … `R<n>-G-s9`: `proceed`, `resolve` (Stages 7 and
+  9), `manual`, `pause`. On `resolve`, run `egm-resolve` with the board's calls
+  already made; do not ask again.
+* **End:** `R<n>-G-next` with what can follow (resolve what is left, check the
+  code against the design, stop).
 
 ## egm-review-loop
 
-Rail: one stage per reviewer group run, finding cards per reviewer. The
-aggregated resolution hand-off gate goes on the board with the options the skill
-lists (auto accept, continue, interactive). On "interactive", the cards are the
-walkthrough. When it runs on its own (not under `egm-review`), its final
-checkpoint is the gate `R<n>-G-next` (next stage, another round, stop).
+One stage per reviewer group run. The aggregated hand-off goes on the board
+with the skill's options; on "interactive", the calls are the walkthrough. Run
+alone, it ends with `R<n>-G-next`.
 
 ## egm-resolve
 
-* Each finding card carries the AI suggestion (`suggestion`) and the proposed
-  edit in short form (`fix`); the full edit stays in
-  `goldfish_review_report.md`. `ESCALATE` cards come first.
-* When a fix changes structure or behaviour, the card's `visual` should let the
-  reader see the change.
-* **Resolution gate:** `R<n>-G-resolve` with `apply` (apply my decisions;
-  undecided fixes follow the suggestion), `continue` (no changes), `chat` (walk
-  me through it in chat).
-* After applying, mark the affected sections `changed` and log counts in
-  `history`.
+Each finding is a call carrying the suggestion and the proposed edit in short
+form (the full edit stays in `goldfish_review_report.md`); `ESCALATE` first.
+When a fix changes structure or behaviour, its `visual` shows the change. Gate
+`R<n>-G-resolve`: `apply`, `continue`, `chat`. After applying, mark the
+affected sections `changed` and log counts in `history`.
 
 ## egm-lite
 
-Rail: the lite phases you run. The reader should see progress through the
-checklist and the bottom line (`headline`). The completion gate goes on the
-board; when the user would type `review` or `goldfish`, offer those as options.
+Progress through the checklist and the bottom line. The completion gate goes on
+the board, offering `review` or `goldfish` where the user would type them.
 
 ## egm-drift-report
 
-The reader should see, per document, where the document and the code agree and
-where they part. Divergences become findings with `where` = file path. Gate:
-`update-doc`, `update-code`, `decide-later`.
+Per document, where the document and the code agree and where they part.
+Divergences are calls with `where` set; options `update-doc`, `update-code`,
+`decide-later`.
 
 ## egm-bootstrap
 
-The reader should see which parts of the tree are documented and which are
-left. The skill's gates go on the board.
+Which parts of the tree are documented and which are left. The skill's gates
+go on the board.

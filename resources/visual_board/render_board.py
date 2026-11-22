@@ -1,7 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 """Render an EGM board page from the template and a board JSON file.
 
-Usage: python3 render_board.py <board.json> <out.html> [--template <board.html>]
+Usage: python3 render_board.py <board.json> <out.html> [--local] [--template <board.html>]
+
+--local writes a complete standalone page to open in a browser (harnesses
+without the Artifact tool). Without it, the output is the page body that the
+Artifact tool wraps on publish.
 
 The template's <script id="egm-board-data"> block is replaced with the JSON.
 Claude keeps board.json as the board's state and runs this before each publish,
@@ -70,6 +74,11 @@ def warnings(data: dict) -> list[str]:
         out.append(f"{name}: id {i!r} also used in {seen_ids[i]}; "
                    "url(#...) references will point at the first one")
       seen_ids.setdefault(i, name)
+  section_keys = {k for s in data.get("sections", []) for k in (s.get("id"), s.get("title")) if k}
+  for f in data.get("findings", []):
+    if f.get("where") and f.get("where") not in section_keys:
+      out.append(f"finding {f.get('id')}: where {f.get('where')!r} names no section; "
+                 "it shows under 'Your calls' at the top")
   for s in data.get("sections", []):
     if not s.get("html") and not s.get("questions"):
       out.append(f"section {s.get('id')}: empty (no html, no questions)")
@@ -90,6 +99,8 @@ def main() -> int:
   parser = argparse.ArgumentParser()
   parser.add_argument("data")
   parser.add_argument("out")
+  parser.add_argument("--local", action="store_true",
+                      help="write a standalone page to open from disk")
   parser.add_argument(
       "--template", default=str(Path(__file__).with_name("board.html")))
   args = parser.parse_args()
@@ -103,6 +114,10 @@ def main() -> int:
     return 1
   title = html_lib.escape(page_title(data), quote=False)
   html = TITLE.sub(lambda m: f"<title>{title}</title>", html, count=1)
+  if args.local:
+    html = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
+            '<meta name="viewport" content="width=device-width,initial-scale=1">'
+            '<style>body{margin:0}</style></head><body>\n' + html + "\n</body></html>\n")
   Path(args.out).write_text(html, encoding="utf-8")
   print(f"wrote {args.out}")
   for w in warnings(data):

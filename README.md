@@ -15,14 +15,16 @@
 
 Develop ideas with context and review documents with fresh eyes. EGM is an open-source plugin for AI assistants.
 
-> **This fork adds the visual board.** In Claude Code and Claude Cowork, each EGM
-> feature gets one private claude.ai Artifact. Brainstorm, draft, review, and
-> resolve all update it with pictures Claude draws for the idea at hand (no
-> diagram language, no fixed chart types), and finding cards. You review there: Accept / Skip / Discuss each finding, approve
-> sections, pick the next step, and press **Send to Claude**. The Markdown files
-> are still written for reviewers and for your repo. See
-> [the board protocol](resources/visual_board/PROTOCOL.md). Other harnesses keep
-> the original chat flow. Turn the board off with `EGM board: off`.
+> **This fork adds the visual board.** Each EGM feature gets one board page:
+> brainstorm, draft, review, and resolve all update it with pictures the agent
+> draws for the idea at hand, and the decisions that need you sit next to them
+> as "Your call" cards. Sections you leave alone count as approved; one button
+> moves on and says what it will do. In Claude Code and Claude Cowork the board
+> is a private claude.ai Artifact and the button sends your reply to the
+> session. In other harnesses it is a local HTML file and the button copies the
+> reply for you to paste. The Markdown files are still written for reviewers
+> and for your repo. See [the board protocol](resources/visual_board/PROTOCOL.md).
+> Turn the board off with `EGM board: off`.
 
 **Elephant** holds your project context and drafts the specification. **Goldfish** reviewers examine the draft and referenced source material without the earlier conversation, helping expose unstated assumptions and blind spots. **You** make the architectural trade-offs and approve the specification before implementing.
 
