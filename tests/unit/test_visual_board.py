@@ -54,3 +54,14 @@ def test_notes_report_unpinned_findings(tmp_path: Path) -> None:
   _, notes = render(tmp_path, data)
   assert "names no section" in notes
   assert "session.example is true" in notes
+
+
+def test_notes_flag_a_pick_question_without_options(tmp_path: Path) -> None:
+  data = {"session": {"title": "T"}, "turn": "claude", "sections": [{
+      "id": "s", "html": "<p>x</p>", "questions": [
+          {"id": "Q1", "q": "OK to spend?", "hint": "yes / no"},
+          {"id": "Q2", "q": "Pick one", "hint": "yes / no", "options": ["Yes", "No"]},
+          {"id": "Q3", "q": "Peak rate?", "hint": "rough is fine"}]}]}
+  _, notes = render(tmp_path, data)
+  assert "question Q1: reads like a pick but has no options" in notes
+  assert "question Q2" not in notes and "question Q3" not in notes

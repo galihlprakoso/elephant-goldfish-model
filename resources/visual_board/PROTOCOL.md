@@ -144,6 +144,9 @@ The user should spend their clicks only on what truly needs them.
   agent cannot settle alone, shown as a "Your call" card with plain choices.
   Pin it to the section it is about (`where` = section id), so the decision
   sits next to its picture.
+* **Make answering cheap.** When a question's answer is one of a few, give
+  them as `options`; the page adds "Other" for anything else. Keep a free text
+  box for answers that are truly open.
 * **Everything else stands unless the user writes a change.** Each section has a
   quiet "Suggest a change" note. A section without a note is approved.
 * **One button moves on, and it says what will happen.** The gate's first
@@ -167,7 +170,9 @@ answer.
 The reply is a text that starts with `EGM board reply`. It names the gate
 choice, each call, each section change, and the sections kept as is. It arrives
 as a turn headed `[Artifact comment sent to Claude]` (hosted), or pasted into
-chat (local). Hosted boards also save each decision in the board database: read
+chat (local). After sending, the page shows it as sent until the user changes
+something, so a second reply for the same gate is an update that replaces the
+first. Hosted boards also save each decision in the board database: read
 it with `ArtifactData` `query` on collection `responses` with
 `where: [["round", "==", <round>]]`; rows are newer than the text. If it came as
 a comment, answer in its thread with `ArtifactComments` in one short line, then
@@ -209,7 +214,8 @@ not carry over.
                 "status": "draft",  // draft | approved | changed | new, or omit
                 "fixed": false,     // true hides "Suggest a change"
                 "html": "<svg…>",
-                "questions": [{"id": "R1-Q1", "q": "Peak events per second?", "hint": "rough is fine"}]}],
+                "questions": [{"id": "R1-Q1", "q": "Peak events per second?", "hint": "rough is fine",
+                               "options": ["Under 50", "50 to 500", "Over 500"]}]}],  // options optional
   "glossary": [{"term": "Idempotency key", "plain": "An ID that lets the receiver ignore repeats."}],
   "history": [{"at": "2026-11-19 10:40", "event": "Stage 7: 2 findings"}]
 }

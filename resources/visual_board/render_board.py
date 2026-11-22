@@ -45,6 +45,9 @@ def visible_words(html: str) -> int:
   return len(TAG.sub(" ", html or "").split())
 
 
+CHOICE_HINT = re.compile(r"\w\s*/\s*\w")  # a hint like "yes / no" lists the picks
+
+
 def warnings(data: dict) -> list[str]:
   """Facts about the board for the agent to weigh; never blocks a render."""
   out = []
@@ -80,6 +83,10 @@ def warnings(data: dict) -> list[str]:
       out.append(f"finding {f.get('id')}: where {f.get('where')!r} names no section; "
                  "it shows under 'Your calls' at the top")
   for s in data.get("sections", []):
+    for q in s.get("questions") or []:
+      if not q.get("options") and CHOICE_HINT.search(str(q.get("hint") or "")):
+        out.append(f"question {q.get('id')}: reads like a pick but has no options, "
+                   "so the viewer gets a text box to type in")
     if not s.get("html") and not s.get("questions"):
       out.append(f"section {s.get('id')}: empty (no html, no questions)")
   for f in data.get("findings", []):

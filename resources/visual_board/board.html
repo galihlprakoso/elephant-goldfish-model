@@ -105,7 +105,9 @@ textarea { width: 100%; font: inherit; color: var(--fg); background: var(--surfa
 .canvas details[open] > summary::before { transform: rotate(90deg); }
 .term { border-bottom: 1px dotted var(--muted); cursor: help; }
 .qs { display: flex; flex-direction: column; gap: 10px; }
-.q label { display: block; font-weight: 600; margin-bottom: 4px; }
+.q label, .q .ql { display: block; font-weight: 600; margin-bottom: 4px; }
+.q .choices + .qother { margin-top: 8px; }
+.qother { width: 100%; box-sizing: border-box; font: inherit; padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--fg); }
 .q small { color: var(--muted); display: block; margin-bottom: 4px; }
 
 /* Calls: the only decision buttons on the page */
@@ -344,6 +346,7 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
    "title": "How a delivery moves",
    "icon": "flow",
    "wide": true,
+   "questions": [{"id": "R1-Q1", "q": "Peak events per second?", "options": ["Under 50", "50 to 500", "Over 500"]}],
    "html": "<style>.wd-map{display:flex;align-items:flex-end;justify-content:center;flex-wrap:wrap;row-gap:12px}.wd-n{border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;width:110px;font:600 13px var(--font-display)}.wd-d{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--elephant-soft);color:var(--elephant);border:2px solid transparent;position:relative}.wd-n.bad .wd-d{background:var(--blocker-soft);color:var(--blocker)}.wd-n[aria-pressed=true] .wd-d{border-color:var(--accent)}.wd-l{flex:1 1 20px;max-width:80px;height:2px;background:var(--line);margin-bottom:34px}.wd-b{position:absolute;top:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;font:700 11px var(--font-display);display:grid;place-items:center}.wd-p{background:var(--surface-2);border-radius:10px;padding:12px 14px;margin-top:14px;display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}.wd-p .t{background:var(--blocker-soft);border-radius:8px;padding:8px 10px}.wd-p .a{background:var(--good-soft);border-radius:8px;padding:8px 10px}.wd-p b{display:block;font:600 11px var(--font-display);letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}.wd-p .t b{color:var(--blocker)}.wd-p .a b{color:var(--good)}@media(max-width:560px){.wd-p{grid-template-columns:1fr}}<\/style><div class=\"wd-map\"><button class=\"wd-n\" data-show=\"save\"><span class=\"wd-d\"><svg class=\"icon\"><use href=\"#i-db\"/><\/svg><\/span>Saved<\/button><span class=\"wd-l\"><\/span><button class=\"wd-n\" data-show=\"queue\"><span class=\"wd-d\"><svg class=\"icon\"><use href=\"#i-queue\"/><\/svg><span class=\"wd-b\">!<\/span><\/span>Queue<\/button><span class=\"wd-l\"><\/span><button class=\"wd-n bad\" data-show=\"send\" aria-pressed=\"true\"><span class=\"wd-d\"><svg class=\"icon\"><use href=\"#i-send\"/><\/svg><span class=\"wd-b\">!<\/span><\/span>Sender<\/button><span class=\"wd-l\"><\/span><button class=\"wd-n\" data-show=\"cust\"><span class=\"wd-d\"><svg class=\"icon\"><use href=\"#i-server\"/><\/svg><\/span>Customer<\/button><\/div><div class=\"wd-p\" data-panel=\"send\"><div class=\"t\"><b>Today<\/b>Reply lost → sent again → charged twice<\/div><svg class=\"icon lg\"><use href=\"#i-arrow\"/><\/svg><div class=\"a\"><b>With a key<\/b>Same key → customer skips the repeat<\/div><\/div><div class=\"wd-p\" data-panel=\"queue\" hidden><div class=\"t\"><b>Unknown<\/b>Peak events per second<\/div><svg class=\"icon lg\"><use href=\"#i-arrow\"/><\/svg><div class=\"a\"><b>Decides<\/b>One queue or one per customer<\/div><\/div><div class=\"wd-p\" data-panel=\"save\" hidden><div class=\"a\"><b>No change<\/b>Event row written first<\/div><\/div><div class=\"wd-p\" data-panel=\"cust\" hidden><div class=\"a\"><b>No change<\/b>Replies 200 when done<\/div><\/div>"
   }
  ],
@@ -463,12 +466,41 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
     wire(box);
     return box;
   }
+  var qInputs = {};
+  function qOptions(q) {
+    return (q.options || []).map(function (o) { return typeof o === "string" ? { id: o, label: o } : { id: o.id || o.label, label: o.label || o.id }; });
+  }
   function questionsBox(items) {
     return el("div", { class: "qs" }, (items || []).map(function (q) {
-      var id = "q-" + q.id;
-      var ta = el("textarea", { id: id, rows: "2", maxlength: "800" });
-      ta.addEventListener("change", function () { setItem(q.id, { kind: "question", answer: ta.value.trim(), question: q.q }); });
-      return el("div", { class: "q" }, [el("label", { for: id, text: q.q }), q.hint ? el("small", { text: q.hint }) : null, ta]);
+      var id = "q-" + q.id, opts = qOptions(q);
+      function save(answer) { setItem(q.id, { kind: "question", answer: answer, question: q.q }); }
+      var hint = q.hint ? el("small", { text: q.hint }) : null;
+      if (!opts.length) {
+        var ta = el("textarea", { id: id, rows: "2", maxlength: "800" });
+        ta.addEventListener("change", function () { save(ta.value.trim()); });
+        qInputs[q.id] = function (a) { ta.value = a || ""; };
+        return el("div", { class: "q" }, [el("label", { for: id, text: q.q }), hint, ta]);
+      }
+      // A pick: one click per answer, with "Other" for anything the options miss.
+      var group = el("div", { class: "choices", role: "radiogroup", "aria-labelledby": id + "-l" });
+      var other = el("input", { type: "text", class: "qother", id: id, maxlength: "400", placeholder: "Your answer", "aria-label": "Other answer", hidden: "" });
+      function pick(v) { group.querySelectorAll(".choice").forEach(function (x) { x.setAttribute("aria-checked", String(x.dataset.v === v)); }); }
+      opts.concat([{ id: "__other", label: "Other…" }]).forEach(function (o) {
+        var b = el("button", { class: "choice", type: "button", role: "radio", "aria-checked": "false", "data-v": o.id, text: o.label });
+        b.addEventListener("click", function () {
+          pick(o.id);
+          other.hidden = o.id !== "__other";
+          if (o.id === "__other") { other.focus(); save(other.value.trim()); } else save(o.label);
+        });
+        group.appendChild(b);
+      });
+      other.addEventListener("change", function () { save(other.value.trim()); });
+      qInputs[q.id] = function (a) {
+        var m = opts.filter(function (o) { return o.label === a; })[0];
+        if (m) { pick(m.id); other.hidden = true; }
+        else if (a) { pick("__other"); other.hidden = false; other.value = a; }
+      };
+      return el("div", { class: "q" }, [el("div", { class: "ql", id: id + "-l", text: q.q }), hint, group, other]);
     }));
   }
 
@@ -556,7 +588,9 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
 
   // ---------- Decision state ----------
   function paintItem(id) {
-    var r = registry[id], v = state.items[id]; if (!r || !v) return;
+    var v = state.items[id];
+    if (v && v.kind === "question" && qInputs[id]) { qInputs[id](v.answer); return; }
+    var r = registry[id]; if (!r || !v) return;
     if (r.kind === "finding") {
       r.group.querySelectorAll(".choice").forEach(function (x) { x.setAttribute("aria-checked", String(x.dataset.v === v.verdict)); });
       r.card.classList.toggle("answered", !!v.verdict);
@@ -572,6 +606,22 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
     $("b-tray").hidden = !YOU;
     if (!YOU) return;
     var st = $("b-tstat"); st.textContent = "";
+    var send = $("b-send"), others = gate ? (gate.options || []) : [];
+    // Already sent and nothing changed since: show that, not a button to press again.
+    var sent = state.sent && state.sent.key === sentKey() ? state.sent : null;
+    if (sent && sent.text === summary()) {
+      send.hidden = true; $("b-more").hidden = true;
+      st.appendChild(el("span", { class: "ok" }, [icon("check", "sm"), sent.how === "sent" ? "Sent to Claude" : "Reply copied"]));
+      if (sent.how !== "sent") {
+        var again = el("button", { class: "link", type: "button", text: "Copy again" });
+        again.addEventListener("click", function () { copyReply(sent.text); });
+        st.appendChild(again);
+      }
+      st.appendChild(el("span", null, [icon("pen", "sm"), "Change anything to send an update"]));
+      return;
+    }
+    send.hidden = false;
+    if (sent) msg("You changed something since sending. Send again to update.", null);
     var open = openCalls(), noted = notedSections();
     if (findings.length) {
       if (open.length) {
@@ -584,15 +634,16 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
     }
     st.appendChild(noted.length ? el("span", null, [icon("pen", "sm"), plural(noted.length, "change") + " noted"])
                                 : el("span", null, [icon("eye", "sm"), "No note = keep as is"]));
-    var opt = gateOption(), send = $("b-send"), l = $("b-sendl");
+    var opt = gateOption(), l = $("b-sendl");
     if (open.length) { send.setAttribute("aria-disabled", "true"); l.textContent = "Make " + (open.length === 1 ? "the call" : "the calls") + " first"; }
     else {
       send.removeAttribute("aria-disabled");
       l.textContent = (opt ? opt.label : "Send to the agent") + (noted.length ? " · " + plural(noted.length, "change") : "");
     }
-    var others = gate ? (gate.options || []) : [];
     $("b-more").hidden = others.length < 2;
   }
+  function sentKey() { return ROUND + ":" + (gate ? gate.id : ""); }
+  function markSent(text, how) { state.sent = { key: sentKey(), text: text, how: how }; saveLocal(); paintTray(); }
   if (gate) {
     state.gate = (gate.options || [])[0] ? gate.options[0].id : null;
     (gate.options || []).forEach(function (o) {
@@ -662,15 +713,18 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
     if (can !== "available") {
       var why = { writers_only: "Only editors can send to Claude.", no_session: "No Claude session is watching this board." }[can] || "";
       await copyReply(text, why);
+      markSent(text, "copied");
       return;
     }
     var send = $("b-send"); send.disabled = true; msg("Sending…");
     try {
       var anchor = await comments.anchorFor($("b-tray"));
       await comments.sendToClaude({ anchor: anchor, text: text });
-      msg("Sent. Claude will reply in the comment thread and update this board.", "good");
+      msg("Claude will reply in the comment thread and update this board.", "good");
+      markSent(text, "sent");
     } catch (e) {
       await copyReply(text, "Not sent (" + ((e && e.code) || "error") + ").");
+      markSent(text, "copied");
     } finally { send.disabled = false; }
   });
 
@@ -699,7 +753,7 @@ ol.hist time { color: var(--muted); font-family: var(--font-mono); font-size: 11
         var v = d.data ? d.data() : d.data, id = d.id;
         if (!v) return;
         if (v.kind === "gate" && gate && id === gate.id) { if (v.choice) state.gate = v.choice; paintMenu(); }
-        else if (v.kind === "question") { state.items[id] = v; var ta = $("q-" + id); if (ta) ta.value = v.answer || ""; }
+        else if (v.kind === "question") { state.items[id] = v; paintItem(id); }
         else if (registry[id]) { state.items[id] = v; paintItem(id); }
       });
       paintTray();
