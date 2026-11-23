@@ -98,6 +98,12 @@ good engineer sketches for a colleague.
 * **Map onto what the reader knows.** Their product's own screens, a familiar
   metaphor, a concrete example ("event 42 arrives twice") beat generic boxes.
 * **Show change as change.** Today next to after, with the difference marked.
+* **Show a visible change the way people will see it.** When the work changes
+  something people look at (a screen, a page, an email, a report), words about
+  it get misread. Draw a mock-up of it on the device or medium where it will be
+  seen, today next to after, in the states that matter. Match the fidelity to
+  the decision: rough blocks to agree on layout, close to real when the details
+  are the point.
 * **Be exact.** A picture is a claim. Every box, arrow, and number must match
   the document and the code.
 
